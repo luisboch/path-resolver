@@ -68,7 +68,7 @@ public class EnginePerformanceTest {
 //        assertEquals("POST/2/3/{cod:number}/" + (size - 10) + "/", rs.getNode().getFullPath());
         log.info("Finished");
 
-        manager.printInfo();
+//        manager.printInfo();
     }
 
     private static PathSearchResult<Long> match(Collection<PathSearchResult<Long>> search, Integer paramSize, Long id) {
