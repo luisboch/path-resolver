@@ -63,7 +63,7 @@ public class Node<A extends Serializable> {
         return node != null && node.startsWith("{") && node.endsWith("}");
     }
 
-    public Node(Node parent, String path) {
+    public Node(Node<A> parent, String path) {
         this.parent = parent;
         this.level = (short) (parent.level + 1);
 
@@ -81,7 +81,7 @@ public class Node<A extends Serializable> {
         this.path = path;
     }
 
-    public Node getParent() {
+    public Node<A> getParent() {
         return parent;
     }
 
@@ -93,11 +93,18 @@ public class Node<A extends Serializable> {
         return level;
     }
 
-    public Node add(String url, A id) throws DuplicatedPathException {
+    /**
+     * Add the given URL to tree and return the last level
+     * @param url
+     * @param id
+     * @return
+     * @throws DuplicatedPathException
+     */
+    public Node<A> add(String url, A id) throws DuplicatedPathException {
         return add(url, url, id);
     }
 
-    private Node add(String url, String fullPath, A id) throws DuplicatedPathException {
+    private Node<A> add(String url, String fullPath, A id) throws DuplicatedPathException {
 
         if (url == null || url.isEmpty() || url.equals("/")) {
             return this;
@@ -115,9 +122,9 @@ public class Node<A extends Serializable> {
             remaining = EMPTY;
         }
 
-        Node node = null;
+        Node<A> node = null;
 
-        for (Node n : children) {
+        for (Node<A> n : children) {
             if (n.matchThis(lPath)) {
                 if (remaining.equals(EMPTY) && n.getId() != null) {
                     throw new DuplicatedPathException(n, fullPath);
@@ -128,7 +135,7 @@ public class Node<A extends Serializable> {
         }
 
         if (node == null) {
-            node = new Node(this, lPath);
+            node = new Node<>(this, lPath);
             children.add(node);
         }
 
@@ -165,7 +172,7 @@ public class Node<A extends Serializable> {
 
         if (this.path == null) {
             // ROOT node, then just passthrough
-            for (Node node : children) {
+            for (Node<A> node : children) {
                 node.search(url, found, params);
             }
         }
@@ -199,7 +206,7 @@ public class Node<A extends Serializable> {
                 found.add(new PathSearchResult<>(this, params));
             } else {
                 if (!remaining.equals(EMPTY)) {
-                    for (Node node : children) {
+                    for (Node<A> node : children) {
                         node.search(remaining, found, params);
                     }
                 }

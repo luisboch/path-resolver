@@ -35,7 +35,7 @@ import java.util.Collection;
 public class PathSearchResult<A extends Serializable> {
 
     private final Node<A> node;
-    private final Collection<Parameter> params = new ArrayList<>();
+    private final Collection<Parameter<A>> params = new ArrayList<>();
     private int iteractions = 0;
 
     public PathSearchResult(Node<A> node) {
@@ -51,7 +51,7 @@ public class PathSearchResult<A extends Serializable> {
         return node;
     }
 
-    public Collection<Parameter> getParams() {
+    public Collection<Parameter<A>> getParams() {
         return params;
     }
 

@@ -30,41 +30,24 @@ import org.path.resolver.engine.Node;
  * @author luis
  */
 public class DuplicatedPathException extends Exception {
-
-    private final Node found;
+	private static final long serialVersionUID = 1L;
+	
+	private final Node<?> found;
     private final String url;
 
-    public DuplicatedPathException(Node found, String url) {
+    public DuplicatedPathException(Node<?> found, String url) {
         super("Duplicated URL: Found: " + found + ", trying this: " + url);
         this.found = found;
         this.url = url;
     }
 
-    public DuplicatedPathException(Node found, String url, String message) {
+    public DuplicatedPathException(Node<?> found, String url, String message) {
         super(message);
         this.found = found;
         this.url = url;
     }
-
-    public DuplicatedPathException(Node found, String url, String message, Throwable cause) {
-        super(message, cause);
-        this.found = found;
-        this.url = url;
-    }
-
-    public DuplicatedPathException(Node found, String url, Throwable cause) {
-        super(cause);
-        this.found = found;
-        this.url = url;
-    }
-
-    public DuplicatedPathException(Node found, String url, String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
-        this.found = found;
-        this.url = url;
-    }
-
-    public Node getFound() {
+    
+    public Node<?> getFound() {
         return found;
     }
 

@@ -32,36 +32,47 @@ import org.path.resolver.engine.Node;
  */
 public class DuplicatedIndexException extends Exception {
 
-    private final Serializable index;
-    private final Node found;
+	private static final long serialVersionUID = 1L;
 
-    public DuplicatedIndexException(Serializable index, Node found) {
-        this.index = index;
-        this.found = found;
-    }
+	private final Serializable index;
+	private final Node<?> found;
 
-    public DuplicatedIndexException(Serializable index, Node found, String message) {
-        super(message);
-        this.index = index;
-        this.found = found;
-    }
+	public DuplicatedIndexException(Serializable index, Node<?> found) {
+		this.index = index;
+		this.found = found;
+	}
 
-    public DuplicatedIndexException(Serializable index, Node found, String message, Throwable cause) {
-        super(message, cause);
-        this.index = index;
-        this.found = found;
-    }
+	public DuplicatedIndexException(Serializable index, Node<?> found, String message) {
+		super(message);
+		this.index = index;
+		this.found = found;
+	}
 
-    public DuplicatedIndexException(Serializable index, Node found, Throwable cause) {
-        super(cause);
-        this.index = index;
-        this.found = found;
-    }
+	public DuplicatedIndexException(Serializable index, Node<?> found, String message, Throwable cause) {
+		super(message, cause);
+		this.index = index;
+		this.found = found;
+	}
 
-    public DuplicatedIndexException(Serializable index, Node found, String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
-        this.index = index;
-        this.found = found;
-    }
+	public DuplicatedIndexException(Serializable index, Node<?> found, Throwable cause) {
+		super(cause);
+		this.index = index;
+		this.found = found;
+	}
+
+	public DuplicatedIndexException(Serializable index, Node<?> found, String message, Throwable cause,
+			boolean enableSuppression, boolean writableStackTrace) {
+		super(message, cause, enableSuppression, writableStackTrace);
+		this.index = index;
+		this.found = found;
+	}
+
+	public Serializable getIndex() {
+		return index;
+	}
+
+	public Node<?> getFound() {
+		return found;
+	}
 
 }

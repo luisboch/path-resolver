@@ -55,7 +55,7 @@ public class TreeManager<A extends Serializable> {
         return this;
     }
 
-    public Node getRootNode() {
+    public Node<A> getRootNode() {
         return rootNode;
     }
 

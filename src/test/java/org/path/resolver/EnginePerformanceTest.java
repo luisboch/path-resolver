@@ -76,7 +76,7 @@ public class EnginePerformanceTest {
         // Search 1
         final String search1 = "POST/1/1/" + (size - 10);
         Collection<PathSearchResult<Long>> search = manager.search(search1);
-        PathSearchResult rs = match(search, 0, null);
+        PathSearchResult<Long> rs = match(search, 0, null);
         log.log(Level.INFO, "Search 1 took: {0}", System.currentTimeMillis() - ms + "ms (id" + rs.getNode().getId() + ")");
 
         // Search 2
@@ -105,7 +105,7 @@ public class EnginePerformanceTest {
                         long ms = System.currentTimeMillis();
                         Collection<PathSearchResult<Long>> search = manager.search(search1);
                         ms = System.currentTimeMillis() - ms;
-                        PathSearchResult rs = match(search, 0, 43981l);
+                        match(search, 0, 43981l);
                         System.out.println("TOOK: " + ms);
                     } catch (Exception e) {
                         e.printStackTrace(System.out);
