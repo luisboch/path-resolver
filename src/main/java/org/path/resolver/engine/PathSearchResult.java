@@ -36,7 +36,6 @@ public class PathSearchResult<A extends Serializable> {
 
     private final Node<A> node;
     private final Collection<Parameter<A>> params = new ArrayList<>();
-    private int iteractions = 0;
 
     public PathSearchResult(Node<A> node) {
         this.node = node;
@@ -54,13 +53,4 @@ public class PathSearchResult<A extends Serializable> {
     public Collection<Parameter<A>> getParams() {
         return params;
     }
-
-    public void setIteractions(int iteractions) {
-        this.iteractions = iteractions;
-    }
-
-    public int getIteractions() {
-        return iteractions;
-    }
-
 }

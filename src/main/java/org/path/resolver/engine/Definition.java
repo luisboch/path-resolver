@@ -63,7 +63,7 @@ public class Definition {
     }
 
     public boolean match(String path) {
-        boolean isPattern = Node.isPattern(path);
+        boolean isPattern = NodeImpl.isPattern(path);
         path = path == null ? "" : path.trim();
         if (!isPattern) {
             return type == Type.TEXT;

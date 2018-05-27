@@ -39,7 +39,7 @@ public class TreeManager<A extends Serializable> {
 
     private final Map<A, Node<A>> indexedMap = new HashMap<>();
 
-    private Node<A> rootNode = new Node<>();
+    private NodeImpl<A> rootNode = new NodeImpl<>();
 
     private TreeManager() {
     }
@@ -72,7 +72,7 @@ public class TreeManager<A extends Serializable> {
     }
 
     public void clear() {
-        rootNode = new Node<>();
+        rootNode = new NodeImpl<>();
         indexedMap.clear();
     }
 

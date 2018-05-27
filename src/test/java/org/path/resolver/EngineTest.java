@@ -112,12 +112,12 @@ public class EngineTest {
         // Deve Encontrar
         for (int i = 1; i < 21; i++) {
             if (manager.getByIndex(i) == null) {
-                fail("Não encontrou " + i);
+                fail("Not found code" + i);
             }
         }
         // Não deve encontrar
         if (manager.getByIndex(27) != null) {
-            fail("Não encontrou 27");
+            fail("Found code 27");
         }
 
         manager.printInfo();

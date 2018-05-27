@@ -28,6 +28,7 @@ import java.io.Serializable;
 /**
  *
  * @author luis
+ * @param <A>
  */
 public class Parameter<A extends Serializable> {
     

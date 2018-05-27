@@ -40,9 +40,9 @@ import org.junit.Test;
  */
 public class EnginePerformanceTest {
 
-    private static Logger log = Logger.getLogger(EnginePerformanceTest.class.getSimpleName());
-    private static final TreeManager<Long> manager = TreeManager.getManager(Long.class);
-    private static int size = 1000;
+    private static final Logger log = Logger.getLogger(EnginePerformanceTest.class.getSimpleName());
+    private static final TreeManager<Long> MANAGER = TreeManager.getManager(Long.class);
+    private static int LAST_REF = 1000;
     public static boolean THREAD_ACTIVE = true;
     public static boolean THREAD_ERROR = false;
     public static long CONCURRENCY_TEST_TIME = 30 * 1000; // 30 secs
@@ -58,9 +58,9 @@ public class EnginePerformanceTest {
         long id = 0;
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 20; j++) {
-                for (int k = 0; k < size; k++) {
-                    manager.addUrl("POST/" + i + "/" + j + "/" + k + "/", ++id);
-                    manager.addUrl("POST/" + i + "/" + j + "/{cod:number}/" + k + "/", ++id);
+                for (int k = 0; k < LAST_REF; k++) {
+                    MANAGER.addUrl("POST/" + i + "/" + j + "/" + k + "/", ++id);
+                    MANAGER.addUrl("POST/" + i + "/" + j + "/{cod:number}/" + k + "/", ++id);
                 }
             }
         }
@@ -74,15 +74,15 @@ public class EnginePerformanceTest {
         long ms = System.currentTimeMillis();
 
         // Search 1
-        final String search1 = "POST/1/1/" + (size - 10);
-        Collection<PathSearchResult<Long>> search = manager.search(search1);
+        final String search1 = "POST/1/1/" + (LAST_REF - 10);
+        Collection<PathSearchResult<Long>> search = MANAGER.search(search1);
         PathSearchResult<Long> rs = match(search, 0, null);
         log.log(Level.INFO, "Search 1 took: {0}", System.currentTimeMillis() - ms + "ms (id" + rs.getNode().getId() + ")");
 
         // Search 2
-        final String search2 = "POST/1/1/98484561/" + (size - 10);
+        final String search2 = "POST/1/1/98484561/" + (LAST_REF - 10);
         ms = System.currentTimeMillis();
-        search = manager.search(search2);
+        search = MANAGER.search(search2);
         rs = match(search, 1, null);
         log.log(Level.INFO, "Search 2 took: {0}", System.currentTimeMillis() - ms + "ms (id" + rs.getNode().getId() + ")");
 
@@ -91,6 +91,7 @@ public class EnginePerformanceTest {
     }
 
     @Test
+    @SuppressWarnings("SleepWhileInLoop")
     public void concurrencyTest() throws Exception {
 
         // Create many many threads 
@@ -99,11 +100,11 @@ public class EnginePerformanceTest {
         for (int i = 0; i < 500; i++) {
             Thread t = new Thread(() -> {
                 while (THREAD_ACTIVE) {
-                    final String search1 = "POST/1/1/" + (size - 10);
+                    final String search1 = "POST/1/1/" + (LAST_REF - 10);
 
                     try {
                         long ms = System.currentTimeMillis();
-                        Collection<PathSearchResult<Long>> search = manager.search(search1);
+                        Collection<PathSearchResult<Long>> search = MANAGER.search(search1);
                         ms = System.currentTimeMillis() - ms;
                         match(search, 0, 43981l);
                         System.out.println("TOOK: " + ms);
@@ -121,13 +122,14 @@ public class EnginePerformanceTest {
 
         long ms = System.currentTimeMillis();
         //Iniciamos todas as threads
-        for (Thread t : threadsList) {
+        threadsList.forEach((t) -> {
             t.start();
-        }
+        });
 
         while (System.currentTimeMillis() - ms > CONCURRENCY_TEST_TIME) {
             Thread.sleep(200);
         }
+        
         THREAD_ACTIVE = false;
         if (THREAD_ERROR) {
             fail("Found error in thread");
