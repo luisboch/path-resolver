@@ -60,7 +60,6 @@ public class EnginePerformanceTest {
         Collection<PathSearchResult<Long>> search = manager.search(search1);
         PathSearchResult rs = match(search, 0, null);
         log.log(Level.INFO, "Search 1 took: {0}", System.currentTimeMillis() - ms + "ms (id" + rs.getNode().getId() + ")");
-//        assertEquals(search1 + "/", rs.getNode().getFullPath());
 
         // Search 2
         final String search2 = "POST/1/1/98484561/" + (size - 10);
@@ -69,10 +68,8 @@ public class EnginePerformanceTest {
         rs = match(search, 1, null);
         log.log(Level.INFO, "Search 2 took: {0}", System.currentTimeMillis() - ms + "ms (id" + rs.getNode().getId() + ")");
 
-//        assertEquals("POST/2/3/{cod:number}/" + (size - 10) + "/", rs.getNode().getFullPath());
         log.info("Finished");
 
-//        manager.printInfo();
     }
 
     @Test
