@@ -5,13 +5,14 @@
  */
 package org.ws.shield;
 
+import java.util.ArrayList;
 import org.ws.shield.engine.PathSearchResult;
 import org.ws.shield.engine.TreeManager;
 import static org.junit.Assert.*;
 import java.util.Collection;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -24,6 +25,9 @@ public class EnginePerformanceTest {
     private static Logger log = Logger.getLogger(EnginePerformanceTest.class.getSimpleName());
     private static final TreeManager<Long> manager = TreeManager.getManager(Long.class);
     private static int size = 1000;
+    public static boolean THREAD_ACTIVE = true;
+    public static boolean THREAD_ERROR = false;
+    public static long CONCURRENCY_TEST_TIME = 30 * 1000; // 30 secs
 
     public EnginePerformanceTest() {
 
@@ -69,6 +73,51 @@ public class EnginePerformanceTest {
         log.info("Finished");
 
 //        manager.printInfo();
+    }
+
+    @Test
+    public void concurrencyTest() throws Exception {
+
+        // Create many many threads 
+        List<Thread> threadsList = new ArrayList<>();
+        THREAD_ACTIVE = true;
+        for (int i = 0; i < 500; i++) {
+            Thread t = new Thread(() -> {
+                while (THREAD_ACTIVE) {
+                    final String search1 = "POST/1/1/" + (size - 10);
+
+                    try {
+                        long ms = System.currentTimeMillis();
+                        Collection<PathSearchResult<Long>> search = manager.search(search1);
+                        ms = System.currentTimeMillis() - ms;
+                        PathSearchResult rs = match(search, 0, 43981l);
+                        System.out.println("TOOK: " + ms);
+                    } catch (Exception e) {
+                        e.printStackTrace(System.out);
+                        THREAD_ERROR = true;
+                    }
+
+                }
+                System.out.println("exit....");
+            });
+
+            threadsList.add(t);
+        }
+
+        long ms = System.currentTimeMillis();
+        //Iniciamos todas as threads
+        for (Thread t : threadsList) {
+            t.start();
+        }
+
+        while (System.currentTimeMillis() - ms > CONCURRENCY_TEST_TIME) {
+            Thread.sleep(200);
+        }
+        THREAD_ACTIVE = false;
+        if (THREAD_ERROR) {
+            fail("Found error in thread");
+        }
+
     }
 
     private static PathSearchResult<Long> match(Collection<PathSearchResult<Long>> search, Integer paramSize, Long id) {
