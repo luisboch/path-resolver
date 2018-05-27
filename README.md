@@ -8,7 +8,7 @@ In some cases we need to identify a call and redirect it to a specific service p
 <ul>
  <li><b>1</b> Register any Path with id/code</li>
  <li><b>2</b> From Servlet/Filter make search using the requested URL to find the designed Service</li>
-<ul>
+</ul>
 
 #Examples:
     Check Method EngineTest#searchTest
