@@ -1,5 +1,5 @@
 # path-resolver
-Resolve a path using three.
+Resolve a path using tree.
 
 # Why
 In some cases we need to identify a call and redirect it to a specific service provider.
